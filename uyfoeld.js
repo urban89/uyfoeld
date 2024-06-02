@@ -2,67 +2,98 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const terrainTypes = ['grass', 'water', 'forest', 'mountain'];
 const map = [
-    ['G', 'G', 'G', 'G'],
-    ['G', 'W', 'W', 'G'],
-    ['G', 'G', 'G', 'G'],
-    ['G', 'W', 'G', 'G']
+    ['W', 'G', 'G', 'G','W', 'G', 'G', 'G'],
+    ['G', 'W', 'W', 'G','G', 'W', 'W', 'G'],
+    ['G', 'W', 'F', 'F','F', 'M', 'W', 'G'],
+    ['G', 'W', 'G', 'G','W', 'W', 'G','W']
 ];
 
 
-const hexRadius = 30;
-const hexHeight = Math.sqrt(3) * hexRadius;
-const hexWidth = 2 * hexRadius;
-const gridWidth = 10;
-const gridHeight = 10;
-
-const tileSize = 50;
-
-
-function gameLoop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawMap();
-    drawPlayer();
-    requestAnimationFrame(gameLoop);
+const terrainColor = 
+{
+    'G': "grass",
+    'W': "water",
+    'F': "forest",
+    'M': "mountain"
 }
 
 
+// this need to be masive and procedurally generated 
+
+// const hexRadius = 30;
+// const hexHeight = Math.sqrt(3) * hexRadius;
+// const hexWidth = 2 * hexRadius;
+// const gridWidth = 10;
+// const gridHeight = 10;
+
+const tileSize = 100;
 
 
-const player = {
-    x: 400,
-    y: 300,
-    size: 20,
-    color: 'blue'
-};
+// function gameLoop() {
+//     ctx.clearRect(0, 0, canvas.width, canvas.height);
+//     drawMap();
+//     requestAnimationFrame(gameLoop);
+// }
 
-function drawPlayer() {
-    ctx.fillStyle = player.color;
-    ctx.fillRect(player.x, player.y, player.size, player.size);
-}
 
-document.addEventListener('keydown', (event) => {
-    switch(event.key) {
-        case 'ArrowUp': player.y -= 10; break;
-        case 'ArrowDown': player.y += 10; break;
-        case 'ArrowLeft': player.x -= 10; break;
-        case 'ArrowRight': player.x += 10; break;
+// function getTerrainColor(terrain) {
+//     switch (terrain) {
+//         case 'grass': return 0x93C47D;
+//         case 'water': return 0x0000ff;
+//         case 'forest': return 0x006600;
+//         case 'mountain': return 0x999999;
+//         default: return 0xffffff;
+//     }
+// }
+
+
+
+function getTerrainColor(terrain) {
+    switch (terrain) {
+        case 'grass': return "#93C47D";
+        case 'water': return "#0000ff";
+        case 'forest': return "#006600";
+        case 'mountain': return "#999999";
+        default: return "#ffffff";
     }
-});
+}
 
 
+
+// why infinite loop?
 function drawMap() {
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let row = 0; row < map.length; row++) {
         for (let col = 0; col < map[row].length; col++) {
             const tile = map[row][col];
-            ctx.fillStyle = tile === 'G' ? 'green' : 'gray';
+            const color = getTerrainColor(terrainColor[tile]);
+            ctx.fillStyle = color;
+
+            // console.log(tile);
+            console.log(`Row: ${row}, Col: ${col}, Tile: ${tile}, Color: ${color}`); 
             ctx.fillRect(col * tileSize, row * tileSize, tileSize, tileSize);
+
+
+            
         }
     }
 }
 
-gameLoop();
+drawMap()
+// gameLoop();
 
-//creating hexagonal grid
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////
+//creating hexagonal grid how??
+
 
 function createHexagonGrid() {
     let hexagons = [];
@@ -102,12 +133,10 @@ function drawHexagon(graphics, x, y, radius) {
     graphics.closePath();
 }
 
-function getTerrainColor(terrain) {
-    switch (terrain) {
-        case 'grass': return 0x00ff00;
-        case 'water': return 0x0000ff;
-        case 'forest': return 0x006600;
-        case 'mountain': return 0x999999;
-        default: return 0xffffff;
-    }
-}
+
+
+
+
+////////////////////// figuring out hexagonal grid
+///////////////////// planing UI
+//////////////////// planing biomes
